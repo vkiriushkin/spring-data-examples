@@ -1,0 +1,1 @@
+CREATE TABLE category (id INTEGER IDENTITY PRIMARY KEY, name VARCHAR(100), description VARCHAR(2000), created DATE, inserted BIGINT)
