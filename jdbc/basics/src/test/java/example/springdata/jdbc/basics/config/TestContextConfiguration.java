@@ -47,10 +47,12 @@ public class TestContextConfiguration {
 				.build();
 	}
 
+	@Bean
 	public ApplicationListener<?> loggingListener(){
 		return (ApplicationListener<JdbcEvent>) jdbcEvent -> System.out.println("received an event: " + jdbcEvent);
 	}
 
+	@Bean
 	public ApplicationListener<?> idGenerator(){
 		return (ApplicationListener<BeforeInsert>) jdbcEvent -> ((Category)jdbcEvent.getEntity()).timeStamp();
 	}
