@@ -21,13 +21,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.experimental.Delegate;
 
 /**
  * A value object to represent {@link Password}s in encrypted and unencrypted state. Note how the methods to create a
  * {@link Password} in encrypted state are restricted to package scope so that only the user subsystem is actually able
  * to encrypted passwords.
- * 
+ *
  * @author Oliver Gierke
  */
 @EqualsAndHashCode
@@ -36,7 +35,7 @@ import lombok.experimental.Delegate;
 @Embeddable
 public class Password implements CharSequence {
 
-	private @Delegate final String password;
+	private final String password;
 	private @Getter transient boolean encrypted;
 
 	Password() {
@@ -46,7 +45,7 @@ public class Password implements CharSequence {
 
 	/**
 	 * Creates a new raw {@link Password} for the given source {@link String}.
-	 * 
+	 *
 	 * @param password must not be {@literal null} or empty.
 	 * @return
 	 */
@@ -58,7 +57,7 @@ public class Password implements CharSequence {
 	 * Creates a new encrypted {@link Password} for the given {@link String}. Note how this method is package protected so
 	 * that encrypted passwords can only created by components in this package and not accidentally by clients using the
 	 * type from other packages.
-	 * 
+	 *
 	 * @param password must not be {@literal null} or empty.
 	 * @return
 	 */
@@ -66,10 +65,25 @@ public class Password implements CharSequence {
 		return new Password(password, true);
 	}
 
+	@Override
+	public int length() {
+		return password.length();
+	}
+
+	@Override
+	public char charAt(int index) {
+		return password.charAt(index);
+	}
+
+	@Override
+	public CharSequence subSequence(int start, int end) {
+		return password.subSequence(start, end);
+	}
+
 	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+		 * (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
 	public String toString() {
 		return encrypted ? password : "********";
 	}
