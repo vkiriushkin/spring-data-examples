@@ -17,22 +17,20 @@ package example.springdata.jdbc.basics.config;
 
 import javax.sql.DataSource;
 
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jdbc.mapping.event.BeforeInsert;
 import org.springframework.data.jdbc.mapping.event.JdbcEvent;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
-import example.springdata.jdbc.basics.domain.Category;
-
 /**
  * @author Jens Schauder
  */
 @Configuration
-@EnableJdbcRepositories(basePackages="example.springdata.jdbc.basics")
+@EnableJdbcRepositories(basePackages = "example.springdata.jdbc.basics")
 public class TestContextConfiguration {
 
 	@Bean
@@ -48,12 +46,12 @@ public class TestContextConfiguration {
 	}
 
 	@Bean
-	public ApplicationListener<?> loggingListener(){
-		return (ApplicationListener<JdbcEvent>) jdbcEvent -> System.out.println("received an event: " + jdbcEvent);
-	}
+	public ApplicationListener<?> loggingListener() {
 
-	@Bean
-	public ApplicationListener<?> idGenerator(){
-		return (ApplicationListener<BeforeInsert>) jdbcEvent -> ((Category)jdbcEvent.getEntity()).timeStamp();
+		return (ApplicationListener<ApplicationEvent>) event -> {
+			if (event instanceof JdbcEvent) {
+				System.out.println("received an event: " + event);
+			}
+		};
 	}
 }
