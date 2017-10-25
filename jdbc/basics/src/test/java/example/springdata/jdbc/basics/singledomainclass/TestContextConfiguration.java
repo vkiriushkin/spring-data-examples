@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package example.springdata.jdbc.basics.config;
+package example.springdata.jdbc.basics.singledomainclass;
 
 import javax.sql.DataSource;
 
@@ -31,7 +31,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
  */
 @Configuration
 @EnableJdbcRepositories(basePackages = "example.springdata.jdbc.basics")
-public class TestContextConfiguration {
+class TestContextConfiguration {
 
 	@Bean
 	DataSource dataSource() {

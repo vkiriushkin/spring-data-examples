@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package example.springdata.jdbc.basics.domain;
+package example.springdata.jdbc.basics.singledomainclass;
 
 import org.springframework.data.repository.CrudRepository;
+
+import example.springdata.jdbc.basics.domain.Category;
 
 /**
  * Repository for Categories.
  *
  * @author Jens Schauder
  */
-public interface CategoryRepository extends CrudRepository<Category, Long> {
+interface CategoryRepository extends CrudRepository<Category, Long> {
 
 }

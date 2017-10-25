@@ -16,11 +16,9 @@
 package example.springdata.jdbc.basics.domain;
 
 import java.time.LocalDate;
-import java.util.Random;
 
 import org.springframework.data.annotation.Id;
 
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 

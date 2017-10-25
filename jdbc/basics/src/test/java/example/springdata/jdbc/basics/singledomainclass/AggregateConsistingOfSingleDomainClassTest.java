@@ -1,28 +1,24 @@
-package example.springdata.jdbc.basics;
+package example.springdata.jdbc.basics.singledomainclass;
 
 import static java.util.Arrays.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import example.springdata.jdbc.basics.config.TestContextConfiguration;
-import example.springdata.jdbc.basics.domain.AgeGroup;
 import example.springdata.jdbc.basics.domain.Category;
-import example.springdata.jdbc.basics.domain.CategoryRepository;
 
 /**
  * @author Jens Schauder
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestContextConfiguration.class)
-public class SimpleCrudTest {
+public class AggregateConsistingOfSingleDomainClassTest {
 
 	@Autowired
 	CategoryRepository repository;
@@ -39,13 +35,13 @@ public class SimpleCrudTest {
 		Category buildings = new Category(null);
 		buildings.setName("buildings");
 
-
-		// load categories
+		// save categories
 		repository.saveAll(asList(cars, buildings));
 
 		// accidental side effect
-		System.out.println("== cars and buildings");
+		System.out.println("== cars and buildings saved");
 		System.out.println("'buildings' got an id " + buildings.getId());
+		assertThat(buildings.getId()).isNotNull();
 
 		repository.findAll().forEach(System.out::println);
 
