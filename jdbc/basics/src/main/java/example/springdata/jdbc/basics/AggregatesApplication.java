@@ -21,6 +21,8 @@ import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.IsoFields;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jdbc.mapping.event.BeforeSave;
+import org.springframework.data.jdbc.mapping.model.DefaultNamingStrategy;
+import org.springframework.data.jdbc.mapping.model.JdbcPersistentProperty;
+import org.springframework.data.jdbc.mapping.model.NamingStrategy;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -92,6 +97,24 @@ public class AggregatesApplication implements CommandLineRunner {
 			if (entity instanceof LegoSet) {
 				LegoSet legoSet = (LegoSet) entity;
 				legoSet.setId(id.incrementAndGet());
+			}
+		};
+	}
+
+	@Bean
+	public NamingStrategy namingStrategy(){
+
+		Map<String, String> columnAliases = new HashMap<String, String>();
+		columnAliases.put("intMaximumAge", "maxAge");
+		columnAliases.put("intMinimumAge", "minAge");
+
+		return new DefaultNamingStrategy() {
+
+			@Override
+			public String getColumnName(JdbcPersistentProperty property) {
+
+				String defaultName = super.getColumnName(property);
+				return columnAliases.getOrDefault(defaultName, defaultName);
 			}
 		};
 	}
