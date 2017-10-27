@@ -28,8 +28,6 @@ public class Manual {
 	@Id
 	private final Long id;
 
-	// no back reference to a Lego Set since it is part of its aggregate
-
 	private String author;
 	private String text;
 }

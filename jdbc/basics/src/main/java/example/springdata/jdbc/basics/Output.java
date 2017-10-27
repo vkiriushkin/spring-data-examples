@@ -13,38 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package example.springdata.jdbc.basics.domain;
+package example.springdata.jdbc.basics;
 
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import org.springframework.data.annotation.Id;
-
-import lombok.Data;
+import lombok.experimental.UtilityClass;
 
 /**
- * A Lego Set consisting of multiple Blocks and a manual
- *
  * @author Jens Schauder
  */
-@Data
-public class LegoSet {
+@UtilityClass
+class Output {
 
-	@Id
-	private int id;
+	static void list(Iterable<?> categories, String title) {
 
-	private String name;
-	private Duration minimumAge;
-	private Duration maximumAge;
+		System.out.println();
+		System.out.println("==== " + title);
 
-	private Manual manual; // one-to-one relationship
+		categories.forEach(category -> {
+			System.out.println(category.toString().replace(", ", ",\n\t"));
+		});
 
-	// private Theme theme;
-	// private Category;
-
-	//private final Map<Brick, Integer> bricks = new HashMap<>();
-
+		System.out.println();
+	}
 }

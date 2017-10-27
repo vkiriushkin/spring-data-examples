@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package example.springdata.jdbc.basics.singledomainclass;
+package example.springdata.jdbc.basics;
 
 import static java.util.Arrays.*;
 
@@ -33,6 +33,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import example.springdata.jdbc.basics.domain.AgeGroup;
 import example.springdata.jdbc.basics.domain.Category;
+import example.springdata.jdbc.basics.domain.CategoryRepository;
 
 /**
  * Demonstrates the most simple usage of Spring Data JDBC. Everything we deal with is a single entity. No collections, let alone multiple aggregate roots.
@@ -54,28 +55,16 @@ public class SingleEntityApplication implements CommandLineRunner {
 
 		// save categories
 		repository.saveAll(asList(cars, buildings));
-		list(repository.findAll(), "`Cars` and `Buildings` got saved");
+		Output.list(repository.findAll(), "`Cars` and `Buildings` got saved");
 
 		// update one
 		buildings.setDescription("Famous and impressive buildings incl. the 'bike shed'.");
 		repository.save(buildings);
-		list(repository.findAll(), "`Buildings` has a description");
+		Output.list(repository.findAll(), "`Buildings` has a description");
 
 		// delete stuff again
 		repository.delete(cars);
-		list(repository.findAll(), "`Cars` is gone.");
-	}
-
-	private void list(Iterable<Category> categories, String title) {
-
-		System.out.println();
-		System.out.println("==== " + title);
-
-		categories.forEach(category -> {
-			System.out.println(category.toString().replace(", ", ",\n\t"));
-		});
-
-		System.out.println();
+		Output.list(repository.findAll(), "`Cars` is gone.");
 	}
 
 	private static Category createCategory(String name, String description, AgeGroup ageGroup) {
@@ -100,7 +89,7 @@ public class SingleEntityApplication implements CommandLineRunner {
 				.setType(EmbeddedDatabaseType.HSQL) //
 				.setScriptEncoding("UTF-8") //
 				.ignoreFailedDrops(true) //
-				.addScript("create.sql") //
+				.addScript("createCategory.sql") //
 				.build();
 	}
 

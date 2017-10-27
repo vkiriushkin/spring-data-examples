@@ -15,36 +15,15 @@
  */
 package example.springdata.jdbc.basics.domain;
 
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import org.springframework.data.repository.CrudRepository;
 
-import org.springframework.data.annotation.Id;
-
-import lombok.Data;
+import example.springdata.jdbc.basics.domain.Category;
 
 /**
- * A Lego Set consisting of multiple Blocks and a manual
+ * Repository for Categories.
  *
  * @author Jens Schauder
  */
-@Data
-public class LegoSet {
-
-	@Id
-	private int id;
-
-	private String name;
-	private Duration minimumAge;
-	private Duration maximumAge;
-
-	private Manual manual; // one-to-one relationship
-
-	// private Theme theme;
-	// private Category;
-
-	//private final Map<Brick, Integer> bricks = new HashMap<>();
+public interface CategoryRepository extends CrudRepository<Category, Long> {
 
 }
