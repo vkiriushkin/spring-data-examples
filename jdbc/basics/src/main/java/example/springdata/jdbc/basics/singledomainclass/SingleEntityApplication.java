@@ -35,12 +35,12 @@ import example.springdata.jdbc.basics.domain.AgeGroup;
 import example.springdata.jdbc.basics.domain.Category;
 
 /**
- * Demonstrates the most simple usage of Spring Data JDBC
+ * Demonstrates the most simple usage of Spring Data JDBC. Everything we deal with is a single entity. No collections, let alone multiple aggregate roots.
  *
  * @author Jens Schauder
  */
 @EnableJdbcRepositories
-public class AggregateConsistingOfSingleDomainClassApp implements CommandLineRunner {
+public class SingleEntityApplication implements CommandLineRunner {
 
 	@Autowired
 	private CategoryRepository repository;
@@ -54,34 +54,31 @@ public class AggregateConsistingOfSingleDomainClassApp implements CommandLineRun
 
 		// save categories
 		repository.saveAll(asList(cars, buildings));
-
-		listAll("`Cars` and `Buildings` got saved");
+		list(repository.findAll(), "`Cars` and `Buildings` got saved");
 
 		// update one
 		buildings.setDescription("Famous and impressive buildings incl. the 'bike shed'.");
 		repository.save(buildings);
-
-		listAll("`Buildings` has a description");
+		list(repository.findAll(), "`Buildings` has a description");
 
 		// delete stuff again
 		repository.delete(cars);
-
-		listAll("`Cars` is gone.");
+		list(repository.findAll(), "`Cars` is gone.");
 	}
 
-	private void listAll(String x) {
+	private void list(Iterable<Category> categories, String title) {
 
 		System.out.println();
-		System.out.println("==== " + x);
+		System.out.println("==== " + title);
 
-		repository.findAll().forEach(category -> {
+		categories.forEach(category -> {
 			System.out.println(category.toString().replace(", ", ",\n\t"));
 		});
 
 		System.out.println();
 	}
 
-	private Category createCategory(String name, String description, AgeGroup ageGroup) {
+	private static Category createCategory(String name, String description, AgeGroup ageGroup) {
 
 		Category category = new Category(null);
 		category.setName(name);
@@ -92,7 +89,7 @@ public class AggregateConsistingOfSingleDomainClassApp implements CommandLineRun
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(AggregateConsistingOfSingleDomainClassApp.class, args);
+		SpringApplication.run(SingleEntityApplication.class, args);
 	}
 
 	@Bean
@@ -125,7 +122,7 @@ public class AggregateConsistingOfSingleDomainClassApp implements CommandLineRun
 
 			Object entity = event.getEntity();
 			if (entity instanceof Category) {
-				Category category = (Category)entity;
+				Category category = (Category) entity;
 				category.timeStamp();
 			}
 		};
