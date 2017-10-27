@@ -30,12 +30,12 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
  * @author Jens Schauder
  */
 @Configuration
-@EnableJdbcRepositories(basePackages = "example.springdata.jdbc.basics")
+@EnableJdbcRepositories
 class TestContextConfiguration {
 
 	@Bean
 	DataSource dataSource() {
-
+		System.out.println("I'm inn *******************************************");
 		return new EmbeddedDatabaseBuilder() //
 				.generateUniqueName(true) //
 				.setType(EmbeddedDatabaseType.HSQL) //
