@@ -15,11 +15,12 @@
  */
 package example.springdata.jdbc.basics.singledomainclass;
 
-import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
+import static java.util.Arrays.*;
+import static org.assertj.core.api.Assertions.*;
 
 import javax.sql.DataSource;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -36,6 +37,7 @@ import example.springdata.jdbc.basics.domain.Category;
 
 /**
  * Demonstrates the most simple usage of Spring Data JDBC
+ *
  * @author Jens Schauder
  */
 @EnableJdbcRepositories
@@ -46,42 +48,52 @@ public class AggregateConsistingOfSingleDomainClassApp implements CommandLineRun
 
 	@Override
 	public void run(String... args) throws Exception {
-		simpleCrud();
+
+		System.out.println(Arrays.toString(args));
+
+		if (args.length == 0) {
+			automaticScript();
+		}
 	}
 
-	public void simpleCrud() {
+	public void automaticScript() {
 
 		// create some categories
-		Category cars = new Category(null);
-		cars.setName("Cars");
-		cars.setDescription(null);
-		cars.setCreated(LocalDate.now());
-
-		Category buildings = new Category(null);
-		buildings.setName("buildings");
+		Category cars = createCategory("Cars", "Anything that has approximately 4 wheels");
+		Category buildings = createCategory("Buildings", null);
 
 		// save categories
 		repository.saveAll(asList(cars, buildings));
 
-		// accidental side effect
-		System.out.println("== cars and buildings saved");
-		System.out.println("'buildings' got an id " + buildings.getId());
-		assertThat(buildings.getId()).isNotNull();
-
-		repository.findAll().forEach(System.out::println);
+		listAll("`Cars` and `Buildings` got saved");
 
 		// update one
 		buildings.setDescription("Famous and impressive buildings incl. the bike shed.");
 		repository.save(buildings);
 
-		System.out.println("== buildings has a description");
-		repository.findAll().forEach(System.out::println);
+		listAll("`Buildings` has a description");
 
 		// delete stuff again
 		repository.delete(cars);
 
-		System.out.println("== no more cars");
+		listAll("`Cars` is gone.");
+	}
+
+	private void listAll(String x) {
+
+		System.out.println();
+		System.out.println("==== " + x);
 		repository.findAll().forEach(System.out::println);
+		System.out.println();
+	}
+
+	private Category createCategory(String name, String description) {
+
+		Category category = new Category(null);
+		category.setName(name);
+		category.setDescription(description);
+
+		return category;
 	}
 
 	public static void main(String[] args) {
@@ -90,7 +102,7 @@ public class AggregateConsistingOfSingleDomainClassApp implements CommandLineRun
 
 	@Bean
 	DataSource dataSource() {
-		System.out.println("I'm inn *******************************************");
+
 		return new EmbeddedDatabaseBuilder() //
 				.generateUniqueName(true) //
 				.setType(EmbeddedDatabaseType.HSQL) //

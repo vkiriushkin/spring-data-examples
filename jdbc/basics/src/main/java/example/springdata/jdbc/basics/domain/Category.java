@@ -15,7 +15,7 @@
  */
 package example.springdata.jdbc.basics.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 
@@ -36,7 +36,7 @@ public class Category {
 	private String name;
 	private String description;
 
-	private LocalDate created;
+	private LocalDateTime created = LocalDateTime.now();
 
 	@Setter
 	private long inserted;
