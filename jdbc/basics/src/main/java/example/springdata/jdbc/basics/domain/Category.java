@@ -49,7 +49,8 @@ public class Category {
 		}
 	}
 
-	// private AgeGroup ageGroup; no enums
+	private AgeGroup ageGroup;
+
 	// no Optional
 	// expected to be fairly eazy to do with the existing conversions
 

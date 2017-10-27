@@ -1,1 +1,1 @@
-CREATE TABLE category (id INTEGER IDENTITY PRIMARY KEY, name VARCHAR(100), description VARCHAR(2000), created DATETIME, inserted BIGINT)
+CREATE TABLE category (id INTEGER IDENTITY PRIMARY KEY, name VARCHAR(100), description VARCHAR(2000), agegroup VARCHAR(20), created DATETIME, inserted BIGINT)

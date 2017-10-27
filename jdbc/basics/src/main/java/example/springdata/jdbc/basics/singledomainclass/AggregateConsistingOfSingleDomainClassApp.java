@@ -31,6 +31,7 @@ import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
+import example.springdata.jdbc.basics.domain.AgeGroup;
 import example.springdata.jdbc.basics.domain.Category;
 
 /**
@@ -48,8 +49,8 @@ public class AggregateConsistingOfSingleDomainClassApp implements CommandLineRun
 	public void run(String... args) throws Exception {
 
 		// create some categories
-		Category cars = createCategory("Cars", "Anything that has approximately 4 wheels");
-		Category buildings = createCategory("Buildings", null);
+		Category cars = createCategory("Cars", "Anything that has approximately 4 wheels", AgeGroup._3to8);
+		Category buildings = createCategory("Buildings", null, AgeGroup._12andOlder);
 
 		// save categories
 		repository.saveAll(asList(cars, buildings));
@@ -72,17 +73,20 @@ public class AggregateConsistingOfSingleDomainClassApp implements CommandLineRun
 
 		System.out.println();
 		System.out.println("==== " + x);
+
 		repository.findAll().forEach(category -> {
 			System.out.println(category.toString().replace(", ", ",\n\t"));
 		});
+
 		System.out.println();
 	}
 
-	private Category createCategory(String name, String description) {
+	private Category createCategory(String name, String description, AgeGroup ageGroup) {
 
 		Category category = new Category(null);
 		category.setName(name);
 		category.setDescription(description);
+		category.setAgeGroup(ageGroup);
 
 		return category;
 	}
