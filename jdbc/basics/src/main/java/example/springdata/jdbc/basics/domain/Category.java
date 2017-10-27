@@ -21,7 +21,6 @@ import org.springframework.data.annotation.Id;
 
 import lombok.Data;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * Coarse classification for {@link LegoSet}s, like "Car", "Plane", "Building" and so on.
@@ -50,14 +49,4 @@ public class Category {
 	}
 
 	private AgeGroup ageGroup;
-
-	// no Optional
-	// expected to be fairly eazy to do with the existing conversions
-
-	// no references
-	// How to implement those without going to Vietnam?
-	// My current idea:
-	// 1. really simple implementation (removing all referencing row and recreating them)
-	// 2. a little more advanced, like updating all existing, adding missing, removing non existent, with configurability for both approaches
-	// 3. integration with third party libs (mybatis, jooq, querydsl) i.O. to allow the user to provide their own logic.
 }
