@@ -21,6 +21,7 @@ import org.springframework.data.annotation.Id;
 
 import lombok.Data;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Coarse classification for {@link LegoSet}s, like "Car", "Plane", "Building" and so on.
@@ -42,7 +43,10 @@ public class Category {
 	private long inserted;
 
 	public void timeStamp() {
-		inserted = System.currentTimeMillis();
+
+		if (inserted == 0) {
+			inserted = System.currentTimeMillis();
+		}
 	}
 
 	// private AgeGroup ageGroup; no enums
