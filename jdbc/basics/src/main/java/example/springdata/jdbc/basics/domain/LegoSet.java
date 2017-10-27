@@ -65,7 +65,7 @@ public class LegoSet {
 	}
 
 	public void setIntMaximumAge(int years) {
-		minimumAge = toPeriod(years);
+		maximumAge = toPeriod(years);
 	}
 
 
