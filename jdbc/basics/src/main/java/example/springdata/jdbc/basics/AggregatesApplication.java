@@ -16,6 +16,11 @@
 package example.springdata.jdbc.basics;
 
 import javax.sql.DataSource;
+import java.time.Duration;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.IsoFields;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +57,14 @@ public class AggregatesApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		repository.save(new LegoSet());
-		//Output.list(repository.findAll(), "LegoSet");
+		LegoSet smallCar = new LegoSet();
+		smallCar.setMinimumAge(Period.ofYears(5));
+		smallCar.setMaximumAge(Period.ofYears(12));
+
+		Output.list(Collections.singleton(smallCar), "debugging");
+
+		repository.save(smallCar);
+		Output.list(repository.findAll(), "LegoSet");
 	}
 
 	public static void main(String[] args) {

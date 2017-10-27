@@ -15,13 +15,13 @@
  */
 package example.springdata.jdbc.basics.domain;
 
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.AccessType.Type;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 import lombok.Data;
 
@@ -31,20 +31,49 @@ import lombok.Data;
  * @author Jens Schauder
  */
 @Data
+@AccessType(Type.PROPERTY)
 public class LegoSet {
 
 	@Id
 	private int id;
 
 	private String name;
-	private Duration minimumAge;
-	private Duration maximumAge;
 
-	private Manual manual; // one-to-one relationship
+	@Transient
+	private Period minimumAge;
+	@Transient
+	private Period maximumAge;
+
+	// private Manual manual; // one-to-one relationship
 
 	// private Theme theme;
 	// private Category;
 
 	//private final Map<Brick, Integer> bricks = new HashMap<>();
 
+	// conversion for custom types currently has to be done through getters/setter + marking the underlying property with @Transient.
+	public int getIntMinimumAge() {
+		return toInt(this.minimumAge);
+	}
+
+	public void setIntMinimumAge(int years) {
+		minimumAge = toPeriod(years);
+	}
+
+	public int getIntMaximumAge() {
+		return toInt(this.maximumAge);
+	}
+
+	public void setIntMaximumAge(int years) {
+		minimumAge = toPeriod(years);
+	}
+
+
+	private static int toInt(Period period) {
+		return (int) (period == null ? 0 : period.get(ChronoUnit.YEARS));
+	}
+
+	private static Period toPeriod(int years) {
+		return Period.ofYears(years);
+	}
 }
