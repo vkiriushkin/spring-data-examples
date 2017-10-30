@@ -44,7 +44,7 @@ public class LegoSet {
 	@Transient
 	private Period maximumAge;
 
-	// private Manual manual; // one-to-one relationship
+	private Manual manual; // one-to-one relationship
 
 	// private Theme theme;
 	// private Category;

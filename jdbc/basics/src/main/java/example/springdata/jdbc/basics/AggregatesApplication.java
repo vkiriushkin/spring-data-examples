@@ -16,10 +16,7 @@
 package example.springdata.jdbc.basics;
 
 import javax.sql.DataSource;
-import java.time.Duration;
 import java.time.Period;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.IsoFields;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -102,11 +99,18 @@ public class AggregatesApplication implements CommandLineRunner {
 	}
 
 	@Bean
-	public NamingStrategy namingStrategy(){
+	public NamingStrategy namingStrategy() {
+
+		Map<String, String> tableAliases = new HashMap<String, String>();
+		tableAliases.put("Manual", "Handbuch");
 
 		Map<String, String> columnAliases = new HashMap<String, String>();
-		columnAliases.put("intMaximumAge", "maxAge");
-		columnAliases.put("intMinimumAge", "minAge");
+		columnAliases.put("LegoSet.intMaximumAge", "maxAge");
+		columnAliases.put("LegoSet.intMinimumAge", "minAge");
+		columnAliases.put("Handbuch.id", "Handbuch_id");
+
+		Map<String, String> reverseColumnAliases = new HashMap<String, String>();
+		reverseColumnAliases.put("LegoSet", "Handbuch_id");
 
 		return new DefaultNamingStrategy() {
 
@@ -114,7 +118,22 @@ public class AggregatesApplication implements CommandLineRunner {
 			public String getColumnName(JdbcPersistentProperty property) {
 
 				String defaultName = super.getColumnName(property);
-				return columnAliases.getOrDefault(defaultName, defaultName);
+				String key = getTableName(property.getOwner().getType()) + "." + defaultName;
+				return columnAliases.getOrDefault(key, defaultName);
+			}
+
+			@Override
+			public String getTableName(Class<?> type) {
+
+				String defaultName = super.getTableName(type);
+				return tableAliases.getOrDefault(defaultName, defaultName);
+			}
+
+			@Override
+			public String getReverseColumnName(JdbcPersistentProperty property) {
+
+				String defaultName = super.getReverseColumnName(property);
+				return reverseColumnAliases.getOrDefault(defaultName, defaultName);
 			}
 		};
 	}
