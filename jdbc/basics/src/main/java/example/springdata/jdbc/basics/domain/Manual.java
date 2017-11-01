@@ -16,6 +16,7 @@
 package example.springdata.jdbc.basics.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 import lombok.Data;
 
@@ -26,7 +27,7 @@ import lombok.Data;
 public class Manual {
 
 	@Id
-	private final Long id;
+	private Long id;
 
 	private String author;
 	private String text;
