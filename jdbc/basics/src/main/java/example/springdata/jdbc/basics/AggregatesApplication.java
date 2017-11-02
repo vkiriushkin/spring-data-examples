@@ -66,7 +66,7 @@ public class AggregatesApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 		LegoSet smallCar = createLegoSet();
-		smallCar.setManual(createManual());
+		smallCar.setManual(createManual("Just put all the pieces together in the right order"));
 
 		repository.save(smallCar);
 		Output.list(repository.findAll(), "Original LegoSet");
@@ -75,12 +75,17 @@ public class AggregatesApplication implements CommandLineRunner {
 
 		repository.save(smallCar);
 		Output.list(repository.findAll(), "Updated");
+
+		smallCar.setManual(createManual("One last attempt: Just build a car! Ok?"));
+
+		repository.save(smallCar);
+		Output.list(repository.findAll(), "Manual replaced");
 	}
 
-	private Manual createManual() {
+	private Manual createManual(String text) {
 		Manual manual = new Manual();
 		manual.setAuthor("Jens Schauder");
-		manual.setText("Just put all the pieces together in the right order");
+		manual.setText(text);
 		return manual;
 	}
 
