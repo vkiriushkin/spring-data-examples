@@ -19,7 +19,6 @@ import javax.sql.DataSource;
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.time.Period;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,7 +28,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.jdbc.mapping.event.BeforeSave;
 import org.springframework.data.jdbc.mapping.model.ConversionCustomizer;
@@ -67,19 +65,16 @@ public class AggregatesApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-
 		Manual manual = new Manual();
 		manual.setAuthor("Jens Schauder");
 		manual.setText("Just put all the pieces together in the right order");
 
 		LegoSet smallCar = new LegoSet();
+		smallCar.setName("Small Car 01");
 		smallCar.setMinimumAge(Period.ofYears(5));
 		smallCar.setMaximumAge(Period.ofYears(12));
 
 		smallCar.setManual(manual);
-
-
-		Output.list(Collections.singleton(smallCar), "debugging");
 
 		repository.save(smallCar);
 		Output.list(repository.findAll(), "LegoSet");
@@ -113,7 +108,7 @@ public class AggregatesApplication implements CommandLineRunner {
 
 				Manual manual = legoSet.getManual();
 				if (manual != null) {
-					manual.setId((long)legoSet.getId());
+					manual.setId((long) legoSet.getId());
 				}
 			}
 		};
