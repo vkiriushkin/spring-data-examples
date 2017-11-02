@@ -65,19 +65,31 @@ public class AggregatesApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
+		LegoSet smallCar = createLegoSet();
+		smallCar.setManual(createManual());
+
+		repository.save(smallCar);
+		Output.list(repository.findAll(), "Original LegoSet");
+
+		smallCar.getManual().setText("Just make it so it looks like a car.");
+
+		repository.save(smallCar);
+		Output.list(repository.findAll(), "Updated");
+	}
+
+	private Manual createManual() {
 		Manual manual = new Manual();
 		manual.setAuthor("Jens Schauder");
 		manual.setText("Just put all the pieces together in the right order");
+		return manual;
+	}
 
+	private LegoSet createLegoSet() {
 		LegoSet smallCar = new LegoSet();
 		smallCar.setName("Small Car 01");
 		smallCar.setMinimumAge(Period.ofYears(5));
 		smallCar.setMaximumAge(Period.ofYears(12));
-
-		smallCar.setManual(manual);
-
-		repository.save(smallCar);
-		Output.list(repository.findAll(), "LegoSet");
+		return smallCar;
 	}
 
 	public static void main(String[] args) {
@@ -104,7 +116,9 @@ public class AggregatesApplication implements CommandLineRunner {
 			Object entity = event.getEntity();
 			if (entity instanceof LegoSet) {
 				LegoSet legoSet = (LegoSet) entity;
-				legoSet.setId(id.incrementAndGet());
+				if (legoSet.getId() == 0) {
+					legoSet.setId(id.incrementAndGet());
+				}
 
 				Manual manual = legoSet.getManual();
 				if (manual != null) {
