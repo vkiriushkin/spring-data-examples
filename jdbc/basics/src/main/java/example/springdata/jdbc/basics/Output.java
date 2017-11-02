@@ -15,6 +15,9 @@
  */
 package example.springdata.jdbc.basics;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lombok.experimental.UtilityClass;
 
 /**
@@ -23,15 +26,16 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 class Output {
 
+	private final Logger LOG = LoggerFactory.getLogger(Output.class);
+
 	static void list(Iterable<?> categories, String title) {
 
-		System.out.println();
-		System.out.println("==== " + title);
+		StringBuilder message = new StringBuilder(String.format("==== %s ====\n", title));
 
 		categories.forEach(category -> {
-			System.out.println(category.toString().replace(", ", ",\n\t"));
+			message.append(category.toString().replace(", ", ",\n\t"));
 		});
 
-		System.out.println();
+		LOG.info(message.toString());
 	}
 }
