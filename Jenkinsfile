@@ -8,7 +8,8 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        sh 'printenv'
+        sh 'docker build -t demo-build:latest -f Docker.build .'
+        sh 'docker run --rm demo-build:latest'
       }
     }
   }
